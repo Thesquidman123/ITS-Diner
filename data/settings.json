@@ -1,0 +1,8 @@
+{
+  "appName": "ITS Diner",
+  "isOpen": true,
+  "closedMessage": "We are currently closed. Check back soon!",
+  "loyaltyStampsRequired": 9,
+  "staticOrderingEnabled": true,
+  "updatedAt": "2026-05-04T16:18:18.530Z"
+}

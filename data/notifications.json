@@ -1,0 +1,227 @@
+[
+  {
+    "id": "note_154b064f-ab84-4f99-a1ba-90c1a4da04a3",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Guest placed a static order for £21.85",
+    "read": false,
+    "createdAt": "2026-05-02T08:48:10.790Z"
+  },
+  {
+    "id": "note_71b651c1-0113-4049-9122-f93e599e8659",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £32.80",
+    "read": false,
+    "createdAt": "2026-05-02T11:49:32.844Z"
+  },
+  {
+    "id": "note_04d9d6df-c9a7-4a9c-8d6f-a56897fa239d",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £4.95",
+    "read": false,
+    "createdAt": "2026-05-02T14:00:09.859Z"
+  },
+  {
+    "id": "note_8e3b2eb2-73f9-4259-93a8-643aabbb2e1e",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £17.90",
+    "read": false,
+    "createdAt": "2026-05-02T14:07:41.355Z"
+  },
+  {
+    "id": "note_6eff84f2-85c9-4961-8ccc-bdc187e34b91",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £7.95",
+    "read": false,
+    "createdAt": "2026-05-02T14:08:01.833Z"
+  },
+  {
+    "id": "note_8ba795d4-21ef-469a-9dbb-7fec94eff386",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £16.90",
+    "read": false,
+    "createdAt": "2026-05-02T14:08:42.011Z"
+  },
+  {
+    "id": "note_048fb9f7-22b5-401a-abfe-7b1ed0c883eb",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Guest placed a static order for £21.85",
+    "read": false,
+    "createdAt": "2026-05-02T14:31:37.349Z"
+  },
+  {
+    "id": "note_66cc8dc4-e2d4-47cb-bfd2-18116a23ced5",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £21.85",
+    "read": false,
+    "createdAt": "2026-05-02T14:32:57.218Z"
+  },
+  {
+    "id": "note_34392ce1-04ad-45a2-8165-bfa08df699b0",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "EFDSAF placed a static order for £8.95",
+    "read": false,
+    "createdAt": "2026-05-02T18:02:39.856Z"
+  },
+  {
+    "id": "note_2b2b2b3e-398f-4d5c-9a8f-4709786d3a60",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £13.90",
+    "read": false,
+    "createdAt": "2026-05-02T23:05:15.593Z"
+  },
+  {
+    "id": "note_c138fe8b-c2c5-4f2b-9018-e4998e10c0c4",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £48.70",
+    "read": false,
+    "createdAt": "2026-05-02T23:05:49.933Z"
+  },
+  {
+    "id": "note_21c34558-65f7-4696-a2c4-15f8ce0dad02",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Antonio placed a static order for £22.80",
+    "read": false,
+    "createdAt": "2026-05-02T23:06:34.346Z"
+  },
+  {
+    "id": "note_bcdc4473-8266-42c8-8648-3f5032716264",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now preparing",
+    "read": false,
+    "createdAt": "2026-05-04T12:27:20.022Z"
+  },
+  {
+    "id": "note_a028f049-ff46-4503-ac91-c31e353dd4be",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now ready",
+    "read": false,
+    "createdAt": "2026-05-04T12:27:21.084Z"
+  },
+  {
+    "id": "note_e6d5c551-0ff1-48bb-bba6-67c6365a6610",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T12:27:21.865Z"
+  },
+  {
+    "id": "note_fccfae44-6204-4e2d-bbc1-2b6573ea25a5",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Tony placed a static order for £5.59",
+    "read": false,
+    "createdAt": "2026-05-04T13:18:14.225Z"
+  },
+  {
+    "id": "note_76c29773-c589-4137-96a9-e30fd4347c80",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:28:57.497Z"
+  },
+  {
+    "id": "note_6c8979a9-da66-49aa-bac3-0d06e92864aa",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:28:59.492Z"
+  },
+  {
+    "id": "note_c37fcab4-1304-4dee-acfd-6d51eb7e2549",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:28:59.500Z"
+  },
+  {
+    "id": "note_ec127206-c134-467f-926a-5d6f53c960be",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:29:07.359Z"
+  },
+  {
+    "id": "note_98b3f5f0-6a28-408b-9283-8ec2cbdaadf8",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:29:08.017Z"
+  },
+  {
+    "id": "note_4ee76134-1826-4e7f-9aa5-477e92249682",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:29:08.822Z"
+  },
+  {
+    "id": "note_ad5661be-02e9-4745-b310-77aeb079dcf5",
+    "userId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "type": "order-status",
+    "title": "Order updated",
+    "message": "Your order is now collected",
+    "read": false,
+    "createdAt": "2026-05-04T13:29:10.532Z"
+  },
+  {
+    "id": "note_c5b23ffc-5dce-47f6-b0f5-e25c62aadcb5",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "tony s placed a static order for £5.21",
+    "read": false,
+    "createdAt": "2026-05-04T13:30:26.644Z"
+  },
+  {
+    "id": "note_a7bde0d8-dba4-4ec9-99a0-d9c3155bc014",
+    "userId": null,
+    "type": "order",
+    "title": "New order received",
+    "message": "Guest placed a static order for £4.69",
+    "read": false,
+    "createdAt": "2026-05-04T17:24:01.707Z"
+  }
+]

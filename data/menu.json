@@ -1,0 +1,146 @@
+[
+  {
+    "id": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+    "name": "Classic Burger",
+    "description": "Grass-fed beef, salad, burger sauce",
+    "price": 8.95,
+    "category": "Burgers",
+    "options": [
+      {
+        "id": "opt_b61b78d1-b430-4ef6-850d-4af740e03767",
+        "name": "Extra cheese",
+        "price": 1
+      },
+      {
+        "id": "opt_9cea9017-739e-46c4-9b65-269b716f30f4",
+        "name": "Bacon",
+        "price": 1.5
+      }
+    ],
+    "imageUrl": "",
+    "available": true,
+    "createdAt": "2026-05-01T19:26:05.361Z",
+    "updatedAt": "2026-05-01T19:26:05.361Z"
+  },
+  {
+    "id": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+    "name": "Chicken Sandwich",
+    "description": "Crispy chicken, slaw, pickles",
+    "price": 7.95,
+    "category": "Sandwiches",
+    "options": [
+      {
+        "id": "opt_725c1a21-9f23-4176-9f97-7c4de942930a",
+        "name": "Hot sauce",
+        "price": 0.5
+      }
+    ],
+    "imageUrl": "",
+    "available": true,
+    "createdAt": "2026-05-01T19:26:05.361Z",
+    "updatedAt": "2026-05-01T19:26:05.361Z"
+  },
+  {
+    "id": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+    "name": "Loaded Fries",
+    "description": "Seasoned fries with cheese sauce",
+    "price": 4.95,
+    "category": "Sides",
+    "options": [],
+    "imageUrl": "",
+    "available": true,
+    "createdAt": "2026-05-01T19:26:05.361Z",
+    "updatedAt": "2026-05-01T19:26:05.361Z"
+  },
+  {
+    "id": "menu_21eea8d4-b36e-4853-91b6-7e121ebcbd01",
+    "name": "Chicken Burger",
+    "description": "With Cheese",
+    "price": 5.21,
+    "category": "Burgers",
+    "options": [
+      {
+        "name": "Cheese",
+        "price": 1
+      }
+    ],
+    "imageUrl": "/uploads/img_ad05a53f-b3b2-40bd-8cfc-6f056c6a4018.jpg",
+    "available": true,
+    "createdAt": "2026-05-04T12:15:17.728Z",
+    "updatedAt": "2026-05-04T12:19:06.936Z"
+  },
+  {
+    "id": "menu_8a1edf3b-ce60-4bac-9183-a5b5e5c97e42",
+    "name": "Chicken Salad",
+    "description": "Chicken Salad with Cucumber",
+    "price": 3,
+    "category": "Sides",
+    "options": [
+      {
+        "name": "Ranch Dressing",
+        "price": 1
+      }
+    ],
+    "imageUrl": "/uploads/img_058c74f4-872b-449f-819a-530053d9965a.jpg",
+    "available": true,
+    "createdAt": "2026-05-04T12:20:27.337Z",
+    "updatedAt": "2026-05-04T12:22:01.138Z"
+  },
+  {
+    "id": "menu_2a02caf9-1c6f-425d-ba21-bdfdf4d452da",
+    "name": "Bacon Sanwich",
+    "description": "",
+    "price": 2.99,
+    "category": "Sandwiches",
+    "options": [
+      {
+        "name": "Extra Bacon",
+        "price": 1
+      },
+      {
+        "name": "Cheese",
+        "price": 0.5
+      }
+    ],
+    "imageUrl": "",
+    "available": true,
+    "createdAt": "2026-05-04T12:43:29.585Z",
+    "updatedAt": "2026-05-04T12:43:48.367Z"
+  },
+  {
+    "id": "menu_1287cc47-2442-48a4-a96d-90148974b94b",
+    "name": "Coke Zero",
+    "description": "",
+    "price": 1.5,
+    "category": "Drinks",
+    "options": [],
+    "imageUrl": "/uploads/img_64560afe-5e95-4606-8e86-e557f7fd62a8.jpg",
+    "available": true,
+    "createdAt": "2026-05-04T16:18:57.804Z",
+    "updatedAt": "2026-05-04T16:22:07.798Z"
+  },
+  {
+    "id": "menu_bdc14259-c054-4dde-a494-cd256c473e0c",
+    "name": "Coke Regular",
+    "description": "",
+    "price": 1.75,
+    "category": "Drinks",
+    "options": [],
+    "imageUrl": "/uploads/img_799423a7-8a1b-4141-b03d-2e6898f9c397.jpg",
+    "available": true,
+    "createdAt": "2026-05-04T16:19:18.648Z",
+    "updatedAt": "2026-05-04T16:22:29.519Z"
+  },
+  {
+    "id": "menu_6cb6f262-7449-4339-af9d-a4756384e19f",
+    "name": "Flap Jack",
+    "description": "",
+    "price": 2,
+    "category": "Desserts",
+    "options": [],
+    "imageUrl": "",
+    "available": true,
+    "createdAt": "2026-05-04T16:19:42.364Z",
+    "updatedAt": "2026-05-04T16:19:42.365Z"
+  }
+]

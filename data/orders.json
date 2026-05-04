@@ -1,0 +1,490 @@
+[
+  {
+    "id": "ord_cb5ce877-92f9-4e5c-96b3-f83b1e38b40d",
+    "customerId": null,
+    "customerName": "Guest",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 21.849999999999998,
+    "total": 21.849999999999998,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T08:48:10.788Z",
+    "updatedAt": "2026-05-04T13:29:06.208Z",
+    "ref": "FQK"
+  },
+  {
+    "id": "ord_41f5a114-a3e3-41de-b964-0687b7e7f5da",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 3,
+        "price": 7.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 32.8,
+    "total": 32.8,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T11:49:32.843Z",
+    "updatedAt": "2026-05-04T13:29:08.015Z",
+    "ref": "Q7M"
+  },
+  {
+    "id": "ord_76f67517-26a7-44e8-a87e-496ee106fbe1",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 4.95,
+    "total": 4.95,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:00:09.857Z",
+    "updatedAt": "2026-05-04T13:29:07.357Z",
+    "ref": "PZG"
+  },
+  {
+    "id": "ord_ae1cbfb0-06dc-4a57-a4e5-15009480c226",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 2,
+        "price": 8.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 17.9,
+    "total": 17.9,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:07:41.354Z",
+    "updatedAt": "2026-05-04T13:29:08.821Z",
+    "ref": "E4A"
+  },
+  {
+    "id": "ord_a40086b8-4f73-497d-af2b-7624b9fdf72b",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 7.95,
+    "total": 7.95,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:08:01.832Z",
+    "updatedAt": "2026-05-04T13:29:10.530Z",
+    "ref": "D4G"
+  },
+  {
+    "id": "ord_509ef330-8112-416a-a1d1-599e3ece4084",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 16.9,
+    "total": 16.9,
+    "status": "new",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:08:42.010Z",
+    "updatedAt": "2026-05-02T14:08:42.010Z",
+    "ref": "ZKP"
+  },
+  {
+    "id": "ord_ef890a39-43c0-4ab9-9d47-254802a15a69",
+    "customerId": null,
+    "customerName": "Guest",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 21.849999999999998,
+    "total": 21.849999999999998,
+    "status": "new",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:31:37.348Z",
+    "updatedAt": "2026-05-02T14:31:37.348Z",
+    "ref": "Z5J"
+  },
+  {
+    "id": "ord_dfd4d7b5-2d01-4f64-ad53-02aee2fa5d99",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 21.849999999999998,
+    "total": 21.849999999999998,
+    "status": "new",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "createdAt": "2026-05-02T14:32:57.217Z",
+    "updatedAt": "2026-05-02T14:32:57.217Z",
+    "ref": "DEM"
+  },
+  {
+    "id": "ord_4f686cdf-99e4-4b95-971d-3b85b36dd911",
+    "ref": "Z9L",
+    "customerId": null,
+    "customerName": "EFDSAF",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 8.95,
+    "total": 8.95,
+    "status": "new",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-02T18:02:39.852Z",
+    "updatedAt": "2026-05-02T18:02:39.852Z"
+  },
+  {
+    "id": "ord_7a92581f-5441-4d54-a38b-0ae0ac701f3d",
+    "ref": "MST",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 1,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 13.899999999999999,
+    "total": 13.899999999999999,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-02T23:05:15.589Z",
+    "updatedAt": "2026-05-04T13:28:59.499Z"
+  },
+  {
+    "id": "ord_370a40cb-dec8-45d8-af75-96fc84be7bad",
+    "ref": "NYZ",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_130c95e4-fbef-4cce-a1d3-5200d0a5bdd6",
+        "name": "Classic Burger",
+        "quantity": 4,
+        "price": 8.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 1,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 48.7,
+    "total": 48.7,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-02T23:05:49.931Z",
+    "updatedAt": "2026-05-04T13:28:59.491Z"
+  },
+  {
+    "id": "ord_62cef3e7-d74b-4f04-b777-7052bba0fa57",
+    "ref": "XWG",
+    "customerId": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "customerName": "Antonio",
+    "items": [
+      {
+        "menuItemId": "menu_b4132bfd-d02d-4790-a142-faf34c3267d9",
+        "name": "Chicken Sandwich",
+        "quantity": 1,
+        "price": 7.95,
+        "selectedOptions": []
+      },
+      {
+        "menuItemId": "menu_298f9366-c8aa-4d65-81d6-7b13951ca351",
+        "name": "Loaded Fries",
+        "quantity": 3,
+        "price": 4.95,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 22.8,
+    "total": 22.8,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-02T23:06:34.344Z",
+    "updatedAt": "2026-05-04T12:27:21.862Z"
+  },
+  {
+    "id": "ord_238f2eee-ccc2-43f1-bf2d-3665696934ce",
+    "ref": "66W",
+    "customerId": null,
+    "customerName": "Tony",
+    "items": [
+      {
+        "menuItemId": "menu_21eea8d4-b36e-4853-91b6-7e121ebcbd01",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 6.21,
+        "selectedOptions": [
+          {
+            "name": "Cheese",
+            "price": 1
+          }
+        ]
+      }
+    ],
+    "subtotal": 6.21,
+    "discount": 0.62,
+    "total": 5.59,
+    "promo": {
+      "code": "MINGE10",
+      "name": "Minge 10%",
+      "type": "percent_off",
+      "discount": 0.62
+    },
+    "status": "preparing",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-04T13:18:14.224Z",
+    "updatedAt": "2026-05-04T13:20:19.167Z"
+  },
+  {
+    "id": "ord_fd8a5d2c-4fed-4250-bc56-824ecf6475a3",
+    "ref": "5SM",
+    "customerId": null,
+    "customerName": "tony s",
+    "items": [
+      {
+        "menuItemId": "menu_21eea8d4-b36e-4853-91b6-7e121ebcbd01",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 5.21,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 5.21,
+    "discount": 0,
+    "total": 5.21,
+    "promo": null,
+    "status": "collected",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-04T13:30:26.642Z",
+    "updatedAt": "2026-05-04T13:37:20.744Z"
+  },
+  {
+    "id": "ord_c89ad44d-088b-49c9-bc84-22ee77b20222",
+    "ref": "H2G",
+    "customerId": null,
+    "customerName": "Guest",
+    "confirmationEmail": null,
+    "items": [
+      {
+        "menuItemId": "menu_21eea8d4-b36e-4853-91b6-7e121ebcbd01",
+        "name": "Chicken Burger",
+        "quantity": 1,
+        "price": 5.21,
+        "selectedOptions": []
+      }
+    ],
+    "subtotal": 5.21,
+    "discount": 0.52,
+    "total": 4.6899999999999995,
+    "promo": {
+      "code": "MINGE10",
+      "name": "Minge 10%",
+      "type": "percent_off",
+      "discount": 0.52
+    },
+    "status": "new",
+    "paymentType": "card",
+    "paymentStatus": "paid",
+    "type": "static",
+    "routeId": null,
+    "stopId": null,
+    "scheduledFor": null,
+    "createdAt": "2026-05-04T17:24:01.706Z",
+    "updatedAt": "2026-05-04T17:24:01.706Z"
+  }
+]

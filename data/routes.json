@@ -1,0 +1,28 @@
+[
+  {
+    "id": "route_54aabbe7-3fc7-4319-a192-8b7c3913b120",
+    "name": "Lunch Route",
+    "driverId": "usr_f45a8767-4629-45c9-80ac-b8fb7186cfc3",
+    "activeStopId": null,
+    "activeUntil": null,
+    "isLive": false,
+    "stops": [
+      {
+        "id": "stop_ea08448d-914b-4a5f-892a-55d681d08a9f",
+        "name": "Business Park",
+        "startsAt": "12:00",
+        "durationMinutes": 20,
+        "isActive": false
+      },
+      {
+        "id": "stop_8c2f6862-3c37-4f5e-9619-8a698a3bc196",
+        "name": "Town Square",
+        "startsAt": "13:00",
+        "durationMinutes": 20,
+        "isActive": false
+      }
+    ],
+    "createdAt": "2026-05-01T19:26:05.362Z",
+    "updatedAt": "2026-05-01T19:26:05.362Z"
+  }
+]

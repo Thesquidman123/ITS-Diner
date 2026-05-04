@@ -1,0 +1,72 @@
+[
+  {
+    "id": "usr_821d1672-f718-465e-ac4e-691ebb3c6d83",
+    "role": "owner",
+    "name": "Owner Demo",
+    "email": "owner@foodvan.local",
+    "phone": "07000000001",
+    "passwordHash": "$2a$10$LRG1/Uz4WFU0gBO/jPwd.uJbvKKX4uxs66bNdK/A0WBJBe/BNy962",
+    "creditEnabled": false,
+    "creditLimit": 0,
+    "balance": 0,
+    "favourites": [],
+    "createdAt": "2026-05-01T19:26:05.196Z",
+    "updatedAt": "2026-05-01T19:26:05.196Z"
+  },
+  {
+    "id": "usr_9eede43d-b805-40a3-b146-cacbfdd27461",
+    "role": "staff",
+    "name": "Kitchen Demo",
+    "email": "staff@foodvan.local",
+    "phone": "07000000002",
+    "passwordHash": "$2a$10$dYnm2qSuHBFuyTpi9bN5HeB3vO9DbVq0zLm41gmaiEVSEDJ0qbKLy",
+    "creditEnabled": false,
+    "creditLimit": 0,
+    "balance": 0,
+    "favourites": [],
+    "createdAt": "2026-05-01T19:26:05.251Z",
+    "updatedAt": "2026-05-01T19:26:05.251Z"
+  },
+  {
+    "id": "usr_f45a8767-4629-45c9-80ac-b8fb7186cfc3",
+    "role": "driver",
+    "name": "Driver Demo",
+    "email": "driver@foodvan.local",
+    "phone": "07000000003",
+    "passwordHash": "$2a$10$2SxzDKy3fTUWgMhA5O6rT.042JSVCo66/kXy1hnN/jSVzo6EQVj36",
+    "creditEnabled": false,
+    "creditLimit": 0,
+    "balance": 0,
+    "favourites": [],
+    "createdAt": "2026-05-01T19:26:05.305Z",
+    "updatedAt": "2026-05-01T19:26:05.305Z"
+  },
+  {
+    "id": "usr_38f7ed42-1464-404a-8139-ab8732c7e54f",
+    "role": "customer",
+    "name": "Customer Demo",
+    "email": "customer@foodvan.local",
+    "phone": "07000000004",
+    "passwordHash": "$2a$10$p.TytUO5JGx9tE.s8PlkDuM8PyM0ciQ3x8ec3wFue/dghjnZZ28ce",
+    "creditEnabled": true,
+    "creditLimit": 40,
+    "balance": 8.5,
+    "favourites": [],
+    "createdAt": "2026-05-01T19:26:05.360Z",
+    "updatedAt": "2026-05-01T19:26:05.360Z"
+  },
+  {
+    "id": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
+    "role": "customer",
+    "name": "Antonio",
+    "email": "tonystefanovics@hotmail.com",
+    "phone": "07939275598",
+    "passwordHash": "$2a$10$2pUANOAkjosdo.7clYNMWOk12rBI0ZRORImF/i4EYeGj3.18D9r7S",
+    "creditEnabled": true,
+    "creditLimit": 25,
+    "balance": 0,
+    "favourites": [],
+    "createdAt": "2026-05-02T11:36:53.315Z",
+    "updatedAt": "2026-05-04T12:27:58.524Z"
+  }
+]

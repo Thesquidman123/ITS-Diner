@@ -1,0 +1,16 @@
+[
+  {
+    "id": "promo_ce6705be-e8df-4958-b9aa-6b042c575219",
+    "code": "MINGE10",
+    "name": "Minge 10%",
+    "type": "percent_off",
+    "value": 10,
+    "minOrderValue": 0,
+    "usageLimit": 100,
+    "usageCount": 2,
+    "active": true,
+    "expiresAt": "2026-05-29",
+    "createdAt": "2026-05-04T13:10:43.921Z",
+    "updatedAt": "2026-05-04T17:24:01.704Z"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "email_bd11127f-84da-42dc-974f-3265c7c01739",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-04T12:27:20.023Z"
+  },
+  {
+    "id": "email_4c295042-f1cd-4762-82e5-d7c0e1e17bc1",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-04T12:27:21.085Z"
+  },
+  {
+    "id": "email_50a5f375-f3b7-4a50-bb19-193bd5ddcffe",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T12:27:21.865Z"
+  },
+  {
+    "id": "email_faa9b698-98e7-4df5-9bc7-f2ad8fb0b1f0",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:28:57.498Z"
+  },
+  {
+    "id": "email_903f4277-88ca-48ee-92ee-9971434035be",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:28:59.493Z"
+  },
+  {
+    "id": "email_ba7587b3-7310-41c2-8094-40f0bc029ae7",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:28:59.501Z"
+  },
+  {
+    "id": "email_9a7ee4c1-0f83-4f6b-8300-380a4e90cd7c",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:29:07.360Z"
+  },
+  {
+    "id": "email_e258f3b1-d5c9-4e75-a24f-60ee91d0419a",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:29:08.018Z"
+  },
+  {
+    "id": "email_a9c908f1-54ac-48c9-a053-11c2e752b22d",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:29:08.823Z"
+  },
+  {
+    "id": "email_6c4131d6-37db-4682-a059-7b28ae92df2b",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-04T13:29:10.533Z"
+  }
+]

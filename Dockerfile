@@ -1,7 +1,15 @@
 FROM node:20-alpine
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
-COPY . .
+RUN npm install --omit=dev
+
+COPY controllers/ ./controllers/
+COPY models/ ./models/
+COPY routes/ ./routes/
+COPY server/ ./server/
+COPY shared/ ./shared/
+
+ENV NODE_ENV=production
 EXPOSE 5000
-CMD ["npm", "run", "start"]
+CMD ["node", "server/index.js"]

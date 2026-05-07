@@ -53,7 +53,16 @@ export function AuthProvider({ children }) {
     setAuthToken('');
   };
 
-  const value = useMemo(() => ({ token, user, loading, isAuthenticated: Boolean(user), login, signup, logout, setUser }), [token, user, loading]);
+  const refreshUser = async () => {
+    try {
+      const response = await api.get('/auth/me');
+      setUser(response.data.user);
+    } catch {
+      // silently ignore — token may have expired
+    }
+  };
+
+  const value = useMemo(() => ({ token, user, loading, isAuthenticated: Boolean(user), login, signup, logout, setUser, refreshUser }), [token, user, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

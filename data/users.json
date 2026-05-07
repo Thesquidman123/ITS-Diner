@@ -40,33 +40,5 @@
     "favourites": [],
     "createdAt": "2026-05-01T19:26:05.305Z",
     "updatedAt": "2026-05-01T19:26:05.305Z"
-  },
-  {
-    "id": "usr_38f7ed42-1464-404a-8139-ab8732c7e54f",
-    "role": "customer",
-    "name": "Customer Demo",
-    "email": "customer@foodvan.local",
-    "phone": "07000000004",
-    "passwordHash": "$2a$10$p.TytUO5JGx9tE.s8PlkDuM8PyM0ciQ3x8ec3wFue/dghjnZZ28ce",
-    "creditEnabled": true,
-    "creditLimit": 40,
-    "balance": 8.5,
-    "favourites": [],
-    "createdAt": "2026-05-01T19:26:05.360Z",
-    "updatedAt": "2026-05-01T19:26:05.360Z"
-  },
-  {
-    "id": "usr_85319f36-f554-41a6-9238-49d98f7d2cfc",
-    "role": "customer",
-    "name": "Antonio",
-    "email": "tonystefanovics@hotmail.com",
-    "phone": "07939275598",
-    "passwordHash": "$2a$10$2pUANOAkjosdo.7clYNMWOk12rBI0ZRORImF/i4EYeGj3.18D9r7S",
-    "creditEnabled": true,
-    "creditLimit": 25,
-    "balance": 0,
-    "favourites": [],
-    "createdAt": "2026-05-02T11:36:53.315Z",
-    "updatedAt": "2026-05-04T12:27:58.524Z"
   }
 ]

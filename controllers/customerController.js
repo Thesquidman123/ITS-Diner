@@ -74,6 +74,16 @@ function payDown(req, res) {
   return res.json(safe);
 }
 
+function redeemLoyalty(req, res) {
+  const customer = usersModel.findById(req.params.id);
+  if (!customer || customer.role !== 'customer') {
+    return res.status(404).json({ message: 'Customer not found' });
+  }
+  const updated = usersModel.update(customer.id, { ...customer, stamps: 0, updatedAt: nowIso() });
+  const { passwordHash, ...safe } = updated;
+  return res.json(safe);
+}
+
 function exportMyData(req, res) {
   const { passwordHash, ...safe } = req.user;
   const orders = ordersModel.all().filter((o) => o.customerId === req.user.id);
@@ -104,6 +114,7 @@ module.exports = {
   listCustomers,
   updateCredit,
   payDown,
+  redeemLoyalty,
   exportMyData,
   deleteMyAccount
 };

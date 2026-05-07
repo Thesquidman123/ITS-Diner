@@ -7,10 +7,10 @@
     "value": 10,
     "minOrderValue": 0,
     "usageLimit": 100,
-    "usageCount": 2,
+    "usageCount": 5,
     "active": true,
     "expiresAt": "2026-05-29",
     "createdAt": "2026-05-04T13:10:43.921Z",
-    "updatedAt": "2026-05-04T17:24:01.704Z"
+    "updatedAt": "2026-05-06T13:40:07.432Z"
   }
 ]

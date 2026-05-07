@@ -1,17 +1,24 @@
 version: '3.9'
+
 services:
   server:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - '5000:5000'
+    expose:
+      - '5000'
+    environment:
+      - PORT=5000
+      - CLIENT_URL=http://localhost:8080
+      - NODE_ENV=production
     env_file:
       - .env
     volumes:
-      - ./data:/app/data
-      - ./uploads:/app/uploads
+      - app_data:/app/data
+      - app_uploads:/app/uploads
     restart: unless-stopped
+    networks:
+      - internal
 
   client:
     build:
@@ -22,3 +29,13 @@ services:
     depends_on:
       - server
     restart: unless-stopped
+    networks:
+      - internal
+
+volumes:
+  app_data:
+  app_uploads:
+
+networks:
+  internal:
+    driver: bridge

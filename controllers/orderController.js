@@ -121,17 +121,24 @@ async function createOrder(req, res, next) {
     if (customer && customer.role === ROLES.CUSTOMER) {
       const settings = getSettings();
       const required = Number(settings.loyaltyStampsRequired || 9);
-      const currentStamps = Number(customer.stamps || 0);
+      const rewardDesc = settings.loyaltyRewardDescription || 'Free item of your choice';
+      const latestCustomer = usersModel.findById(customer.id);
+      const currentStamps = Number(latestCustomer.stamps || 0);
       const newStamps = currentStamps + 1;
-      usersModel.update(customer.id, { ...customer, stamps: newStamps, updatedAt: nowIso() });
+      usersModel.update(latestCustomer.id, { ...latestCustomer, stamps: newStamps, updatedAt: nowIso() });
       if (newStamps >= required) {
-        usersModel.update(customer.id, { stamps: 0, updatedAt: nowIso() });
         await createNotification({
           userId: customer.id,
           type: 'loyalty',
-          title: '🎉 Free item earned!',
-          message: `You've collected ${required} stamps — enjoy a free item on your next order! Show this to the crew.`,
+          title: '🎉 Reward earned!',
+          message: `You've collected ${required} stamps — your reward is: ${rewardDesc}. Show this to the crew when you collect your next order!`,
           email: customer.email
+        });
+        await createNotification({
+          userId: null,
+          type: 'loyalty-alert',
+          title: `🎉 ${latestCustomer.name} has earned a reward`,
+          message: `${latestCustomer.name} has reached ${required} stamps. Reward: ${rewardDesc}. Confirm it has been given in the Customers tab to reset their count.`
         });
       }
     }

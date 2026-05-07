@@ -192,7 +192,7 @@ export default function AccountPage({ user }) {
             <p className="text-sm text-slate-500">No orders yet.</p>
           ) : (
             <div className="space-y-2">
-              {orders.map((order, i) => (
+              {orders.slice(0, 20).map((order, i) => (
                 <div key={order.id} className="stagger-item rounded-2xl border border-slate-200 bg-slate-50/80 p-3" style={{ '--delay': `${i * 30}ms` }}>
                   <div className="flex items-start justify-between gap-3">
                     <div>

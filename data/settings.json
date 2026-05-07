@@ -2,7 +2,13 @@
   "appName": "ITS Diner",
   "isOpen": true,
   "closedMessage": "We are currently closed. Check back soon!",
-  "loyaltyStampsRequired": 9,
+  "loyaltyStampsRequired": 14,
+  "loyaltyRewardDescription": "Benny's Special Sausage and Special Sauce",
   "staticOrderingEnabled": true,
-  "updatedAt": "2026-05-04T16:18:18.530Z"
+  "smtpHost": "",
+  "smtpPort": 587,
+  "smtpUser": "",
+  "smtpPass": "",
+  "smtpFrom": "",
+  "updatedAt": "2026-05-06T15:26:30.548Z"
 }

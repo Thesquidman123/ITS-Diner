@@ -68,5 +68,292 @@
     "subject": "Order updated",
     "message": "Your order is now collected",
     "createdAt": "2026-05-04T13:29:10.533Z"
+  },
+  {
+    "id": "email_adc81d16-c75d-4086-8bcb-09804041e92f",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #HKF",
+    "message": "Hi Antonio, your order #HKF has been placed!\n\nItems: 3x Chicken Burger\nTotal: £15.63\n\nShow reference #HKF when collecting. Thanks!",
+    "createdAt": "2026-05-06T08:13:45.960Z"
+  },
+  {
+    "id": "email_99b240c4-f90a-4fee-9b87-3f3ffcc9ba76",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #9C7",
+    "message": "Hi Antonio, your order #9C7 has been placed!\n\nItems: 1x Classic Burger, 1x Flap Jack\nTotal: £13.45\n\nShow reference #9C7 when collecting. Thanks!",
+    "createdAt": "2026-05-06T09:10:34.742Z"
+  },
+  {
+    "id": "email_e0d45664-22da-4967-8ead-9b244ff726ed",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #JLE",
+    "message": "Hi Antonio, your order #JLE has been placed!\n\nItems: 1x Chicken Burger, 1x Classic Burger\nTotal: £17.66\n\nShow reference #JLE when collecting. Thanks!",
+    "createdAt": "2026-05-06T09:14:01.963Z"
+  },
+  {
+    "id": "email_9b5a9d72-bf9d-4daf-a7b5-0f49da5dc286",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #PHT",
+    "message": "Hi Antonio, your order #PHT has been placed!\n\nItems: 1x Chicken Burger\nTotal: £4.69\n\nShow reference #PHT when collecting. Thanks!",
+    "createdAt": "2026-05-06T09:14:58.510Z"
+  },
+  {
+    "id": "email_4fbfcb15-39a5-469b-8242-569362e27161",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T09:15:53.747Z"
+  },
+  {
+    "id": "email_d4afab1b-b073-46a2-8e35-09d2f61b0ba0",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T09:15:55.399Z"
+  },
+  {
+    "id": "email_bdfd8310-59ea-4270-b736-da8060211acb",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T09:15:57.878Z"
+  },
+  {
+    "id": "email_cb9973d8-0e63-4eb6-bab4-396c32720724",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T09:16:00.102Z"
+  },
+  {
+    "id": "email_9be8e09b-911d-4644-b88b-463d48b34d59",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #KJU",
+    "message": "Hi Antonio, your order #KJU has been placed!\n\nItems: 1x Chicken Burger, 1x Classic Burger\nTotal: £14.99\n\nShow reference #KJU when collecting. Thanks!",
+    "createdAt": "2026-05-06T12:25:33.191Z"
+  },
+  {
+    "id": "email_2bd6d25d-b46a-41da-ad58-8694d10cf054",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T12:40:13.370Z"
+  },
+  {
+    "id": "email_baabc937-792a-4ade-affa-21425dfdf7b1",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T12:40:15.729Z"
+  },
+  {
+    "id": "email_f9c6b289-087f-411c-8a67-4646443e111c",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T12:40:17.573Z"
+  },
+  {
+    "id": "email_6096b3d9-51b7-4d96-93c3-5d1ad1bbcd8f",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #B4D",
+    "message": "Hi Antonio, your order #B4D has been placed!\n\nItems: 1x Chicken Burger, 1x Bennys Choclate Clam, 1x Bennys Special Chocolate Star Fish\nTotal: £28.26\n\nShow reference #B4D when collecting. Thanks!",
+    "createdAt": "2026-05-06T13:37:12.937Z"
+  },
+  {
+    "id": "email_03c96349-7c37-4b34-92aa-122c557c44ab",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T13:37:22.125Z"
+  },
+  {
+    "id": "email_d41f5693-d2ad-4a2a-8726-7480b1928ca6",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T13:37:25.165Z"
+  },
+  {
+    "id": "email_4e7fef7c-2f27-4bc2-8bc6-de5c03e0d67c",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T13:37:27.845Z"
+  },
+  {
+    "id": "email_f48cef52-d0fb-4c69-8b30-74f24e159a84",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #XJ4",
+    "message": "Hi Antonio, your order #XJ4 has been placed!\n\nItems: 1x Chicken Burger, 1x Classic Burger\nTotal: £12.74\n\nShow reference #XJ4 when collecting. Thanks!",
+    "createdAt": "2026-05-06T13:40:07.444Z"
+  },
+  {
+    "id": "email_51f19ea7-b773-46bf-9929-dd5ec4b766f4",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #3LS",
+    "message": "Hi Antonio, your order #3LS has been placed!\n\nItems: 1x Chicken Burger\nTotal: £5.21\n\nShow reference #3LS when collecting. Thanks!",
+    "createdAt": "2026-05-06T13:47:45.712Z"
+  },
+  {
+    "id": "email_5c6801f6-8fb0-4c9c-b78e-3d854f35324e",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T13:47:55.642Z"
+  },
+  {
+    "id": "email_4308713d-f6da-4cf5-8458-f602d63b9996",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T13:47:56.805Z"
+  },
+  {
+    "id": "email_71d8298b-25a6-44f6-bddc-a692a946e96c",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T13:47:57.996Z"
+  },
+  {
+    "id": "email_29ff4c0c-29cd-4ad3-9ae5-573f2faeef3f",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T13:47:59.104Z"
+  },
+  {
+    "id": "email_e3f92805-2e53-40eb-90b2-fdf55c6d897a",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T13:48:00.159Z"
+  },
+  {
+    "id": "email_890b929a-4685-46c5-b30a-8e3c85d321e8",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T13:48:01.187Z"
+  },
+  {
+    "id": "email_457370d5-1cdc-4887-a992-0fa1d5452708",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "🎉 Free item earned!",
+    "message": "You've collected 9 stamps — enjoy a free item on your next order! Show this to the crew.",
+    "createdAt": "2026-05-06T14:05:56.146Z"
+  },
+  {
+    "id": "email_87c691d6-70fa-44db-8904-ac0363eccb08",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #V9Q",
+    "message": "Hi Antonio, your order #V9Q has been placed!\n\nItems: 1x Chicken Burger\nTotal: £5.21\n\nShow reference #V9Q when collecting. Thanks!",
+    "createdAt": "2026-05-06T14:05:56.149Z"
+  },
+  {
+    "id": "email_1f3a676b-f465-4249-9c4c-93c0207a3c40",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #BFA",
+    "message": "Hi Antonio, your order #BFA has been placed!\n\nItems: 1x Chicken Burger, 1x Classic Burger\nTotal: £14.16\n\nShow reference #BFA when collecting. Thanks!",
+    "createdAt": "2026-05-06T14:12:19.995Z"
+  },
+  {
+    "id": "email_dc488396-6950-4bc8-8517-07c843c52cc3",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T14:12:28.412Z"
+  },
+  {
+    "id": "email_c7763f56-3f86-420b-af0d-0e8978141071",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T14:12:29.488Z"
+  },
+  {
+    "id": "email_bb955b0c-406e-4e09-b237-7410d8c7e397",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T14:12:31.173Z"
+  },
+  {
+    "id": "email_6bce6b25-d387-4f00-bc57-3174c9da1af0",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T14:12:32.120Z"
+  },
+  {
+    "id": "email_fb12b4c9-678f-4664-91e9-c3de4f3d2aea",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T14:12:34.214Z"
+  },
+  {
+    "id": "email_94e685a3-d966-4d0a-8b51-4f975232e10e",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T14:12:35.418Z"
+  },
+  {
+    "id": "email_7f58a3a4-5b8d-4cce-8f0a-9feaaa6cd69e",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #L8K",
+    "message": "Hi Antonio, your order #L8K has been placed!\n\nItems: 1x Chicken Burger\nTotal: £5.21\n\nShow reference #L8K when collecting. Thanks!",
+    "createdAt": "2026-05-06T14:14:26.916Z"
+  },
+  {
+    "id": "email_cf96970b-5cf3-4c3c-b1e9-0fdb4cad3fcf",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T14:14:42.130Z"
+  },
+  {
+    "id": "email_9b54ff89-6bbd-495f-9efb-04288e27f3ac",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T14:14:43.827Z"
+  },
+  {
+    "id": "email_cc5e8cf6-bc4c-4cda-aec6-4adaba09dd73",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T14:14:45.174Z"
+  },
+  {
+    "id": "email_78da60e4-b1ac-4d6d-aa8d-77f51c7e0c89",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order confirmed — #HT7",
+    "message": "Hi Antonio, your order #HT7 has been placed!\n\nItems: 1x Classic Burger\nTotal: £8.95\n\nShow reference #HT7 when collecting. Thanks!",
+    "createdAt": "2026-05-06T14:23:43.700Z"
+  },
+  {
+    "id": "email_f2335d54-420c-48a8-b772-c216f7a5317c",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now preparing",
+    "createdAt": "2026-05-06T14:23:56.586Z"
+  },
+  {
+    "id": "email_09bf3214-b93b-415b-874c-f79491fd704f",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now ready",
+    "createdAt": "2026-05-06T14:23:58.353Z"
+  },
+  {
+    "id": "email_73f97329-c463-4801-9fd9-4106b2e6e054",
+    "to": "tonystefanovics@hotmail.com",
+    "subject": "Order updated",
+    "message": "Your order is now collected",
+    "createdAt": "2026-05-06T14:23:59.529Z"
   }
 ]

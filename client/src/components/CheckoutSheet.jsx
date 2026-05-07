@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar, CheckCircle, Clock, X } from 'lucide-react';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -107,8 +108,9 @@ export default function CheckoutSheet({ open, onClose, summary, customer, onComp
       setPromoInput('');
       setPromoState(null);
       setPromoError('');
+      setMode(customer?.creditEnabled ? 'credit' : 'card');
     }
-  }, [open]);
+  }, [open, customer?.creditEnabled]);
 
   const stripePromise = useMemo(() => {
     if (!stripeState.publishableKey) {
@@ -197,9 +199,9 @@ export default function CheckoutSheet({ open, onClose, summary, customer, onComp
     return d.toISOString().slice(0, 16);
   })();
 
-  return (
-    <div className="fixed inset-0 z-20 flex items-end bg-slate-950/45 backdrop-blur-sm fade-in md:items-center md:justify-center">
-      <div className="w-full max-w-lg rounded-t-3xl border border-white/70 bg-white/95 p-5 shadow-2xl pop-in md:rounded-3xl">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-end bg-slate-950/45 backdrop-blur-sm fade-in md:items-center md:justify-center">
+      <div className="w-full max-w-lg overflow-y-auto rounded-t-3xl border border-white/70 bg-white/95 p-5 shadow-2xl pop-in md:rounded-3xl" style={{ maxHeight: '92vh' }}>
         <div className="mb-4 flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.25em] text-brand-600">Checkout</p>
@@ -315,10 +317,26 @@ export default function CheckoutSheet({ open, onClose, summary, customer, onComp
 
             {mode === 'credit' ? (
               <div className="space-y-3">
-                {!customer?.creditEnabled ? <p className="text-sm text-red-600">Credit is not enabled for this account.</p> : null}
-                <button className="btn-primary w-full" disabled={!customer?.creditEnabled || creditBusy} onClick={completeCredit}>
-                  {creditBusy ? 'Adding to tab...' : 'Confirm and add to tab'}
-                </button>
+                {!customer?.creditEnabled ? (
+                  <p className="text-sm text-red-600">Credit is not enabled for this account.</p>
+                ) : (() => {
+                  const remaining = Number(customer.creditLimit || 0) - Number(customer.balance || 0);
+                  const overLimit = discountedTotal > remaining;
+                  return overLimit ? (
+                    <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                      ⚠️ This order (£{discountedTotal.toFixed(2)}) exceeds your remaining tab credit (£{remaining.toFixed(2)}). Please pay by card or reduce your order.
+                    </div>
+                  ) : null;
+                })()}
+                {(() => {
+                  const remaining = Number(customer?.creditLimit || 0) - Number(customer?.balance || 0);
+                  const overLimit = customer?.creditEnabled && discountedTotal > remaining;
+                  return (
+                    <button className="btn-primary w-full" disabled={!customer?.creditEnabled || creditBusy || overLimit} onClick={completeCredit}>
+                      {creditBusy ? 'Adding to tab...' : 'Confirm and add to tab'}
+                    </button>
+                  );
+                })()}
               </div>
             ) : stripeState.loading ? (
               <p className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-500">Preparing secure payment...</p>
@@ -341,5 +359,5 @@ export default function CheckoutSheet({ open, onClose, summary, customer, onComp
         )}
       </div>
     </div>
-  );
+  , document.body);
 }

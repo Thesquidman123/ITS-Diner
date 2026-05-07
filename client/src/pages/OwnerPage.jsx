@@ -87,7 +87,7 @@ function MenuTab() {
     setEditing(item.id);
     setForm({ name: item.name, description: item.description || '', price: String(item.price), category: item.category, available: item.available, image: null });
     setExtras((item.options || []).map((o) => ({ name: o.name, price: String(o.price || 0) })));
-    setPreview(item.imageUrl ? `http://localhost:5000${item.imageUrl}` : null);
+    setPreview(item.imageUrl ? item.imageUrl : null);
     setFormError('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -190,7 +190,7 @@ function MenuTab() {
           <div key={item.id} className={`card overflow-hidden !p-0 border ${item.available ? 'border-white/60' : 'border-slate-200 opacity-60'}`}>
             <div className="relative aspect-video bg-slate-100">
               {item.imageUrl
-                ? <img src={`http://localhost:5000${item.imageUrl}`} alt={item.name} className="h-full w-full object-cover" />
+                ? <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
                 : <div className="flex h-full items-center justify-center text-3xl">🍔</div>
               }
               {!item.available && (
@@ -222,78 +222,271 @@ function MenuTab() {
   );
 }
 
+function buildLabelHtml(order, appName) {
+  const time = new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+  const itemRows = order.items.map((it) => {
+    const opts = (it.selectedOptions || []).map((o) => `<div style="margin-left:12px;font-size:11px">+ ${o.name}${o.price ? ' (+£' + Number(o.price).toFixed(2) + ')' : ''}</div>`).join('');
+    return `<div style="margin-bottom:6px"><strong>${it.quantity}&times; ${it.name}</strong>${opts}</div>`;
+  }).join('');
+  const scheduled = order.scheduledFor
+    ? `<div style="background:#000;color:#fff;padding:4px 8px;font-size:11px;margin-bottom:6px">&#x1F551; SCHEDULED ${new Date(order.scheduledFor).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>`
+    : '';
+  const tab = order.paymentType === 'credit' ? '<span style="border:1px solid #000;padding:1px 5px;font-size:10px">TAB</span>' : '';
+  const promo = order.promo ? `<div style="font-size:11px">Promo: ${order.promo.code} &minus;£${Number(order.discount).toFixed(2)}</div>` : '';
+  return `<!DOCTYPE html><html><head><title>Label #${order.ref}</title>
+<style>
+  @page { margin: 8mm; size: 80mm auto; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Courier New', monospace; font-size: 13px; color: #000; background: #fff; width: 80mm; margin: 0 auto; padding: 0; }
+  .dashed { border-top: 1px dashed #000; margin: 6px 0; }
+</style>
+</head><body>
+<div style="text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase">${appName || 'Food Van'}</div>
+<div style="text-align:center;font-size:36px;font-weight:900;letter-spacing:4px;line-height:1.1">#${order.ref}</div>
+<div class="dashed"></div>
+<div style="font-size:13px"><strong>${order.customerName}</strong></div>
+<div style="font-size:11px;color:#333">${time}</div>
+${scheduled}
+<div class="dashed"></div>
+${itemRows}
+<div class="dashed"></div>
+${promo}
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <div style="font-size:11px;text-transform:capitalize">${order.paymentType} &bull; ${order.type} ${tab}</div>
+  <div style="font-size:18px;font-weight:900">£${Number(order.total).toFixed(2)}</div>
+</div>
+<script>window.onload=function(){window.print();setTimeout(function(){window.close();},500);};<\/script>
+</body></html>`;
+}
+
+const KDS_COLS = [
+  { key: 'new',       label: 'New',       headerCls: 'bg-blue-600',    ringCls: 'ring-blue-300',    dotCls: 'bg-blue-500',    nextLabel: 'Start preparing' },
+  { key: 'preparing', label: 'Preparing', headerCls: 'bg-amber-500',   ringCls: 'ring-amber-300',   dotCls: 'bg-amber-500',   nextLabel: 'Mark ready' },
+  { key: 'ready',     label: 'Ready ✓',   headerCls: 'bg-emerald-600', ringCls: 'ring-emerald-300', dotCls: 'bg-emerald-500', nextLabel: 'Collected' },
+];
+
+function beep(freq = 880, dur = 0.18, vol = 0.25) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    g.gain.value = vol; osc.frequency.value = freq;
+    osc.start(); osc.stop(ctx.currentTime + dur);
+    osc.onended = () => ctx.close();
+  } catch {}
+}
+
+function schedInfo(order, now) {
+  if (!order.scheduledFor) return null;
+  const mins = Math.round((new Date(order.scheduledFor) - now) / 60000);
+  const urgency = mins < 0 ? 'overdue' : mins <= 5 ? 'urgent' : mins <= 15 ? 'soon' : 'ok';
+  return { mins, urgency };
+}
+
+function ageLabel(createdAt, now) {
+  const m = Math.floor((now - new Date(createdAt)) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m}m ago`;
+  return `${Math.floor(m / 60)}h ${m % 60}m ago`;
+}
+
+function sortKds(list, now) {
+  return [...list].sort((a, b) => {
+    const aS = a.scheduledFor ? new Date(a.scheduledFor) - now : Infinity;
+    const bS = b.scheduledFor ? new Date(b.scheduledFor) - now : Infinity;
+    if (aS !== bS) return aS - bS;
+    return new Date(a.createdAt) - new Date(b.createdAt);
+  });
+}
+
 function OrdersTab() {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState('all');
+  const [appName, setAppName] = useState('');
+  const [now, setNow] = useState(Date.now());
+  const [showCollected, setShowCollected] = useState(false);
+  const prevNewIds = useRef(new Set());
+  const alertedIds = useRef(new Set());
 
-  const load = async () => { const res = await api.get('/orders'); setOrders(res.data); };
-  useEffect(() => { load(); const t = setInterval(load, 20000); return () => clearInterval(t); }, []);
-
-  const updateStatus = async (id, status) => {
-    await api.patch(`/orders/${id}/status`, { status });
-    load();
+  const load = async () => {
+    const res = await api.get('/orders');
+    const data = res.data;
+    const ids = new Set(data.filter((o) => o.status === 'new').map((o) => o.id));
+    const hasNew = [...ids].some((id) => !prevNewIds.current.has(id));
+    if (hasNew && prevNewIds.current.size > 0) {
+      beep(880, 0.15); setTimeout(() => beep(1100, 0.15), 200);
+    }
+    prevNewIds.current = ids;
+    setOrders(data);
   };
 
-  const filtered = filter === 'all' ? orders : filter === 'scheduled' ? orders.filter((o) => o.scheduledFor) : orders.filter((o) => o.status === filter);
+  useEffect(() => {
+    load();
+    api.get('/settings').then((r) => setAppName(r.data.appName || '')).catch(() => {});
+    const ot = setInterval(load, 15000);
+    const ct = setInterval(() => setNow(Date.now()), 30000);
+    return () => { clearInterval(ot); clearInterval(ct); };
+  }, []);
+
+  useEffect(() => {
+    orders.forEach((o) => {
+      if (!o.scheduledFor || o.status === 'collected' || alertedIds.current.has(o.id)) return;
+      const mins = (new Date(o.scheduledFor) - now) / 60000;
+      if (mins <= 15 && mins > 0) {
+        alertedIds.current.add(o.id);
+        beep(440, 0.25); setTimeout(() => beep(660, 0.25), 350); setTimeout(() => beep(880, 0.25), 700);
+      }
+    });
+  }, [now, orders]);
+
+  const advance = async (id, status) => {
+    const next = { new: 'preparing', preparing: 'ready', ready: 'collected' }[status];
+    if (next) { await api.patch(`/orders/${id}/status`, { status: next }); load(); }
+  };
+
+  const byStatus = (key) => sortKds(orders.filter((o) => o.status === key), now);
+  const collected = sortKds(orders.filter((o) => o.status === 'collected'), now).slice(0, 20);
+  const newOrders = byStatus('new');
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {['all', 'new', 'preparing', 'ready', 'scheduled', 'collected'].map((f) => (
-          <button key={f} className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${filter === f ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`} onClick={() => setFilter(f)}>
-            {f.charAt(0).toUpperCase() + f.slice(1)}
-          </button>
-        ))}
-        <button className="ml-auto rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200" onClick={load}>↻ Refresh</button>
+      {/* toolbar */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Live orders</span>
+        <button className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition" onClick={load}>↻ Refresh</button>
+        <button
+          className="flex items-center gap-1 rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition"
+          onClick={() => setShowCollected((v) => !v)}
+        >
+          {showCollected ? 'Hide collected' : `Collected (${collected.length})`}
+        </button>
+        <button
+          className="ml-auto flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-700 transition"
+          onClick={() => {
+            if (!newOrders.length) return;
+            const win = window.open('', '_blank');
+            win.document.write(newOrders.map((o) => buildLabelHtml(o, appName)).join('<div style="page-break-after:always"></div>'));
+            win.document.close();
+          }}
+        >
+          <Printer className="h-3.5 w-3.5" /> Print all new
+        </button>
       </div>
 
-      {filtered.length === 0 ? (
-        <div className="card soft-panel py-8 text-center text-sm text-slate-500">No orders in this view.</div>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((order, i) => (
-            <div key={order.id} className="card stagger-item border border-white/60" style={{ '--delay': `${i * 30}ms` }}>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-xl bg-slate-900 px-3 py-1 font-mono text-base font-black tracking-widest text-white">#{order.ref || '—'}</span>
-                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${STATUS_COLOURS[order.status]}`}>{order.status}</span>
-                    {order.scheduledFor && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">🕐 {new Date(order.scheduledFor).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
-                    {order.paymentType === 'credit' && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-700">TAB</span>}
+      {/* kanban board */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {KDS_COLS.map((col) => {
+          const colOrders = byStatus(col.key);
+          return (
+            <div key={col.key} className="flex flex-col gap-2 min-w-0">
+              {/* column header */}
+              <div className={`flex items-center justify-between rounded-2xl px-4 py-2 text-white ${col.headerCls}`}>
+                <span className="font-bold tracking-wide">{col.label}</span>
+                {colOrders.length > 0 && (
+                  <span className="rounded-full bg-white/25 px-2 py-0.5 text-sm font-black">{colOrders.length}</span>
+                )}
+              </div>
+
+              {colOrders.length === 0 && (
+                <div className="rounded-2xl border border-dashed border-slate-200 py-8 text-center text-xs text-slate-400">No orders</div>
+              )}
+
+              {colOrders.map((order) => {
+                const si = schedInfo(order, now);
+                const isOverdue = si?.urgency === 'overdue';
+                const isUrgent = si?.urgency === 'urgent';
+                const isSoon = si?.urgency === 'soon';
+                const cardCls = isOverdue
+                  ? 'ring-2 ring-red-500 bg-red-50 animate-pulse'
+                  : isUrgent
+                  ? 'ring-2 ring-orange-400 bg-orange-50'
+                  : isSoon
+                  ? 'ring-1 ring-amber-400 bg-amber-50'
+                  : 'bg-white border border-slate-200';
+
+                return (
+                  <div key={order.id} className={`rounded-2xl p-3 shadow-sm transition ${cardCls}`}>
+                    {/* scheduled banner */}
+                    {si && (
+                      <div className={`mb-2 flex items-center justify-between rounded-xl px-2.5 py-1 text-xs font-bold ${isOverdue ? 'bg-red-600 text-white' : isUrgent ? 'bg-orange-500 text-white' : isSoon ? 'bg-amber-400 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                        <span>🕐 {new Date(order.scheduledFor).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</span>
+                        <span>{isOverdue ? 'OVERDUE' : `${Math.abs(si.mins)}m ${si.mins < 0 ? 'ago' : 'away'}`}</span>
+                      </div>
+                    )}
+
+                    {/* ref + age */}
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="rounded-lg bg-slate-900 px-2.5 py-0.5 font-mono text-sm font-black tracking-widest text-white">#{order.ref}</span>
+                      <span className="text-[11px] text-slate-400 shrink-0">{ageLabel(order.createdAt, now)}</span>
+                    </div>
+
+                    {/* customer */}
+                    <p className="mt-1.5 font-bold text-slate-900 leading-tight">{order.customerName}</p>
+
+                    {/* items */}
+                    <ul className="mt-1.5 space-y-1">
+                      {order.items.map((it, idx) => (
+                        <li key={idx} className="text-sm">
+                          <span className="font-semibold">{it.quantity}× {it.name}</span>
+                          {(it.selectedOptions || []).map((o, oi) => (
+                            <div key={oi} className="ml-3 text-[11px] text-slate-500">+ {o.name}{o.price ? ` (+£${Number(o.price).toFixed(2)})` : ''}</div>
+                          ))}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* footer: total + tags */}
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                      <span className="font-extrabold text-slate-900">£{Number(order.total).toFixed(2)}</span>
+                      <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold capitalize text-slate-500">{order.paymentType}</span>
+                      {order.paymentType === 'credit' && <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-700">TAB</span>}
+                      {order.promo && <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">{order.promo.code}</span>}
+                      <button
+                        className="ml-auto flex items-center gap-1 rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 hover:bg-slate-200 transition"
+                        onClick={() => { const win = window.open('', '_blank'); win.document.write(buildLabelHtml(order, appName)); win.document.close(); }}
+                      >
+                        <Printer className="h-2.5 w-2.5" /> Label
+                      </button>
+                    </div>
+
+                    {/* advance button */}
+                    {col.key !== 'ready' ? (
+                      <button
+                        className={`mt-2 w-full rounded-xl py-2 text-sm font-bold text-white transition ${col.key === 'new' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                        onClick={() => advance(order.id, order.status)}
+                      >
+                        {col.nextLabel} →
+                      </button>
+                    ) : (
+                      <button
+                        className="mt-2 w-full rounded-xl bg-slate-700 py-2 text-sm font-bold text-white hover:bg-slate-900 transition"
+                        onClick={() => advance(order.id, order.status)}
+                      >
+                        ✓ {col.nextLabel}
+                      </button>
+                    )}
                   </div>
-                  <h4 className="mt-1.5 font-bold text-slate-900">{order.customerName}</h4>
-                  <p className="text-sm text-slate-500">{order.items.map((i) => `${i.quantity}× ${i.name}`).join(' · ')}</p>
-                  {order.promo && (
-                    <p className="mt-1 flex items-center gap-1.5 text-xs text-emerald-700">
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-mono font-bold">{order.promo.code}</span>
-                      <span>-£{Number(order.discount).toFixed(2)} off</span>
-                    </p>
-                  )}
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-extrabold">£{Number(order.total).toFixed(2)}</p>
-                  {order.promo && <p className="text-xs text-slate-400 line-through">£{Number(order.total + order.discount).toFixed(2)}</p>}
-                  <p className="text-xs capitalize text-slate-400">{order.paymentType} · {order.type}</p>
-                </div>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2 items-center">
-                <button
-                  className="ml-auto rounded-xl bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition print:hidden"
-                  onClick={() => {
-                    const win = window.open('', '_blank');
-                    const items = order.items.map((i) => `<tr><td>${i.quantity}×</td><td>${i.name}</td><td style="text-align:right">£${(i.price * i.quantity).toFixed(2)}</td></tr>`).join('');
-                    win.document.write(`<html><head><title>#${order.ref}</title><style>body{font-family:monospace;padding:16px;max-width:280px}h2{margin:0}table{width:100%}td{padding:2px 0}hr{border:1px dashed #000}</style></head><body><h2>#${order.ref}</h2><p>${order.customerName}<br/>${new Date(order.createdAt).toLocaleString()}</p><hr/><table>${items}</table><hr/><p style="text-align:right"><strong>TOTAL £${Number(order.total).toFixed(2)}</strong>${order.promo ? '<br/>Code: ' + order.promo.code : ''}</p><script>window.print();window.close();<\/script></body></html>`);
-                    win.document.close();
-                  }}
-                >
-                  <Printer className="inline h-3 w-3 mr-1" />Print
-                </button>
-                {['new', 'preparing', 'ready', 'collected'].map((s) => (
-                  <button key={s} className={`rounded-xl px-3 py-1 text-xs font-semibold transition ${order.status === s ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`} onClick={() => updateStatus(order.id, s)}>
-                    {s.charAt(0).toUpperCase() + s.slice(1)}
-                  </button>
-                ))}
-              </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* collected orders (collapsed) */}
+      {showCollected && (
+        <div className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Collected ({collected.length})</p>
+          {collected.length === 0 && <div className="rounded-2xl border border-dashed border-slate-200 py-6 text-center text-xs text-slate-400">None yet</div>}
+          {collected.map((order) => (
+            <div key={order.id} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 px-4 py-2 text-sm opacity-70">
+              <span className="font-mono font-black text-slate-700">#{order.ref}</span>
+              <span className="text-slate-500">{order.customerName}</span>
+              <span className="font-bold">£{Number(order.total).toFixed(2)}</span>
+              <span className="text-xs text-slate-400">{ageLabel(order.createdAt, now)}</span>
+              <button className="rounded-lg bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-600 hover:bg-slate-300 transition" onClick={() => { const win = window.open('', '_blank'); win.document.write(buildLabelHtml(order, appName)); win.document.close(); }}>
+                <Printer className="inline h-2.5 w-2.5" />
+              </button>
             </div>
           ))}
         </div>
@@ -304,20 +497,63 @@ function OrdersTab() {
 
 function CustomersTab() {
   const [customers, setCustomers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ creditEnabled: false, creditLimit: 25, balance: 0 });
+  const [initialBalance, setInitialBalance] = useState(0);
+  const [historyOpen, setHistoryOpen] = useState(null);
+  const [stampsRequired, setStampsRequired] = useState(9);
+  const [rewardDesc, setRewardDesc] = useState('Free item of your choice');
 
-  const load = async () => { const res = await api.get('/customers'); setCustomers(res.data); };
-  useEffect(() => { load(); }, []);
+  const load = async () => {
+    const [cRes, oRes] = await Promise.all([api.get('/customers'), api.get('/orders')]);
+    setCustomers(cRes.data);
+    setOrders(oRes.data);
+    return cRes.data;
+  };
+  useEffect(() => {
+    load();
+    api.get('/settings').then(r => { setStampsRequired(Number(r.data.loyaltyStampsRequired || 9)); setRewardDesc(r.data.loyaltyRewardDescription || 'Free item of your choice'); }).catch(() => {});
+    const t = setInterval(load, 30000);
+    return () => clearInterval(t);
+  }, []);
+
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  const customerOrders = (customerId) =>
+    orders
+      .filter((o) => o.customerId === customerId && new Date(o.createdAt) >= sixMonthsAgo)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const openManageTab = async (c) => {
+    const fresh = await load();
+    const current = fresh.find((x) => x.id === c.id) || c;
+    const bal = Number(current.balance || 0);
+    setEditing(current.id);
+    setInitialBalance(bal);
+    setForm({ creditEnabled: current.creditEnabled || false, creditLimit: current.creditLimit || 25, balance: bal });
+  };
 
   const saveCredit = async (id) => {
-    await api.patch(`/customers/${id}/credit`, form);
+    const freshList = await load();
+    const fresh = freshList.find((x) => x.id === id);
+    const liveBalance = fresh ? Number(fresh.balance || 0) : initialBalance;
+    const balanceToSave = form.balance !== initialBalance ? form.balance : liveBalance;
+    await api.patch(`/customers/${id}/credit`, { ...form, balance: balanceToSave });
     setEditing(null);
+    load();
+  };
+
+  const confirmReward = async (id) => {
+    await api.post(`/customers/${id}/redeem-loyalty`);
     load();
   };
 
   return (
     <div className="space-y-3">
+      <div className="flex justify-end">
+        <button className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition" onClick={load}>↻ Refresh balances</button>
+      </div>
       {customers.length === 0 ? (
         <div className="card soft-panel py-8 text-center text-sm text-slate-500">No customers yet.</div>
       ) : customers.map((c, i) => (
@@ -353,6 +589,47 @@ function CustomersTab() {
             </div>
           )}
 
+          {/* Loyalty reward banner */}
+          {Number(c.stamps || 0) >= stampsRequired && (
+            <div className="flex items-center justify-between gap-3 rounded-2xl bg-amber-50 px-3 py-2.5 ring-1 ring-amber-300">
+              <div>
+                <p className="text-sm font-bold text-amber-800">🎉 Reward earned! ({c.stamps}/{stampsRequired} stamps)</p>
+                <p className="text-xs text-amber-700">{rewardDesc}</p>
+              </div>
+              <button
+                className="shrink-0 rounded-xl bg-amber-500 px-3 py-1.5 text-xs font-bold text-white hover:bg-amber-600 transition"
+                onClick={() => confirmReward(c.id)}
+              >
+                ✓ Confirm given
+              </button>
+            </div>
+          )}
+
+          {/* 6-month order history */}
+          {historyOpen === c.id && (
+            <div className="space-y-1.5 rounded-2xl bg-slate-50 p-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Last 6 months</p>
+              {customerOrders(c.id).length === 0 ? (
+                <p className="text-xs text-slate-400">No orders in this period.</p>
+              ) : (
+                customerOrders(c.id).map((o) => (
+                  <div key={o.id} className="flex items-start justify-between gap-2 rounded-xl bg-white px-3 py-2 text-xs shadow-sm">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-mono font-bold text-slate-600">#{o.ref}</span>
+                        <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${STATUS_COLOURS[o.status]}`}>{o.status}</span>
+                        {o.paymentType === 'credit' && <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-700">TAB</span>}
+                      </div>
+                      <p className="mt-0.5 text-slate-500 truncate">{o.items.map((i) => `${i.quantity}× ${i.name}`).join(', ')}</p>
+                      <p className="text-[10px] text-slate-400">{new Date(o.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                    </div>
+                    <span className="font-extrabold text-slate-900 shrink-0">£{Number(o.total).toFixed(2)}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
           {editing === c.id ? (
             <div className="space-y-2 rounded-2xl bg-slate-50 p-3">
               <div className="flex items-center gap-2">
@@ -375,9 +652,15 @@ function CustomersTab() {
               </div>
             </div>
           ) : (
-            <button className="btn-secondary w-full !py-1.5 !text-sm" onClick={() => { setEditing(c.id); setForm({ creditEnabled: c.creditEnabled || false, creditLimit: c.creditLimit || 25, balance: c.balance || 0 }); }}>
-              Manage tab
-            </button>
+            <div className="flex gap-2">
+              <button className="btn-secondary flex-1 !py-1.5 !text-sm" onClick={() => openManageTab(c)}>Manage tab</button>
+              <button
+                className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition"
+                onClick={() => setHistoryOpen(historyOpen === c.id ? null : c.id)}
+              >
+                {historyOpen === c.id ? '▲ History' : `▼ History (${customerOrders(c.id).length})`}
+              </button>
+            </div>
           )}
         </div>
       ))}
@@ -754,16 +1037,28 @@ function SettingsTab() {
 
       <div className="card border border-white/60 space-y-4">
         <h3 className="font-extrabold text-slate-900">Loyalty stamps</h3>
-        <p className="text-sm text-slate-500">Customers earn 1 stamp per order. When they reach the target, they get a free-item notification.</p>
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-slate-600">Stamps required for reward</label>
-          <input
-            className="input w-32"
-            type="number" min="1" max="50"
-            value={settings.loyaltyStampsRequired || 9}
-            onChange={(e) => setSettings({ ...settings, loyaltyStampsRequired: Number(e.target.value) })}
-            onBlur={() => patch({ loyaltyStampsRequired: settings.loyaltyStampsRequired })}
-          />
+        <p className="text-sm text-slate-500">Customers earn 1 stamp per order. When they reach the target they get a notification, and you see an alert in the Customers tab to confirm the reward has been given.</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-600">Stamps required for reward</label>
+            <input
+              className="input"
+              type="number" min="1" max="50"
+              value={settings.loyaltyStampsRequired || 9}
+              onChange={(e) => setSettings({ ...settings, loyaltyStampsRequired: Number(e.target.value) })}
+              onBlur={() => patch({ loyaltyStampsRequired: settings.loyaltyStampsRequired })}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-600">Reward description (shown to customer &amp; staff)</label>
+            <input
+              className="input"
+              placeholder="e.g. Free regular coffee"
+              value={settings.loyaltyRewardDescription || ''}
+              onChange={(e) => setSettings({ ...settings, loyaltyRewardDescription: e.target.value })}
+              onBlur={() => patch({ loyaltyRewardDescription: settings.loyaltyRewardDescription })}
+            />
+          </div>
         </div>
       </div>
 
@@ -929,9 +1224,13 @@ function BackupRestore() {
 
 function TakingsTab() {
   const [orders, setOrders] = useState([]);
+  const [menu, setMenu] = useState([]);
   const [period, setPeriod] = useState('week');
 
-  useEffect(() => { api.get('/orders').then(r => setOrders(r.data)).catch(() => {}); }, []);
+  useEffect(() => {
+    api.get('/orders').then(r => setOrders(r.data)).catch(() => {});
+    api.get('/menu').then(r => setMenu(r.data)).catch(() => {});
+  }, []);
 
   const now = new Date();
   function periodStart(p) {
@@ -952,9 +1251,11 @@ function TakingsTab() {
   active.forEach(o => { const t = o.paymentType || 'other'; byPayment[t] = (byPayment[t] || 0) + Number(o.total || 0); });
   const paymentTotal = Object.values(byPayment).reduce((s, v) => s + v, 0) || 1;
 
+  const menuById = Object.fromEntries(menu.map(m => [m.id, m]));
+
   const itemMap = {};
   active.forEach(o => (o.items || []).forEach(it => {
-    if (!itemMap[it.name]) itemMap[it.name] = { name: it.name, qty: 0, rev: 0 };
+    if (!itemMap[it.name]) itemMap[it.name] = { name: it.name, menuItemId: it.menuItemId, qty: 0, rev: 0 };
     itemMap[it.name].qty += it.quantity || 1;
     itemMap[it.name].rev += Number(it.price || 0) * (it.quantity || 1);
   }));
@@ -1053,26 +1354,36 @@ function TakingsTab() {
           <p className="text-sm text-slate-400">No items sold in this period.</p>
         ) : (
           <div className="space-y-3">
-            {topItems.map((item, i) => (
-              <div key={item.name}>
-                <div className="mb-1 flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-800">
-                    <span className="mr-2 text-xs font-bold text-slate-400">#{i + 1}</span>
-                    {item.name}
-                  </span>
-                  <div className="flex gap-3 text-right">
-                    <span className="text-slate-500">{item.qty} sold</span>
-                    <span className="font-bold text-slate-900">£{item.rev.toFixed(2)}</span>
+            {topItems.map((item, i) => {
+              const mi = menuById[item.menuItemId];
+              return (
+                <div key={item.name}>
+                  <div className="mb-1 flex items-center gap-3">
+                    {mi?.imageUrl ? (
+                      <img src={mi.imageUrl} alt={item.name} className="h-10 w-10 rounded-xl object-cover shrink-0 border border-slate-100" />
+                    ) : (
+                      <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg shrink-0">🍽</div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <span className="mr-1.5 text-xs font-bold text-slate-400">#{i + 1}</span>
+                          <span className="font-semibold text-slate-800">{item.name}</span>
+                          {mi?.category && <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">{mi.category}</span>}
+                        </div>
+                        <div className="flex gap-3 text-right text-sm shrink-0">
+                          <span className="text-slate-500">{item.qty} sold</span>
+                          <span className="font-bold text-slate-900">£{item.rev.toFixed(2)}</span>
+                        </div>
+                      </div>
+                      <div className="mt-1 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                        <div className="h-2 rounded-full bg-[#F5B800] transition-all duration-500" style={{ width: `${(item.qty / maxQty) * 100}%` }} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-                  <div
-                    className="h-2 rounded-full bg-[#F5B800] transition-all duration-500"
-                    style={{ width: `${(item.qty / maxQty) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -1091,8 +1402,56 @@ const TABS = [
   { key: 'settings', label: 'Settings', icon: Settings },
 ];
 
+const PROTECTED_TABS = new Set(['settings', 'takings']);
+const OWNER_PIN = '2468';
+
 export default function OwnerPage({ user }) {
-  const [tab, setTab] = useState('menu');
+  const [tab, setTab] = useState('orders');
+  const [isOpen, setIsOpen] = useState(true);
+  const [togglingOpen, setTogglingOpen] = useState(false);
+  const [pinTarget, setPinTarget] = useState(null);
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState(false);
+  const [unlockedTabs, setUnlockedTabs] = useState(new Set());
+
+  useEffect(() => {
+    api.get('/settings').then(r => setIsOpen(Boolean(r.data.isOpen))).catch(() => {});
+  }, []);
+
+  const toggleOpen = async () => {
+    setTogglingOpen(true);
+    const next = !isOpen;
+    setIsOpen(next);
+    await api.patch('/settings', { isOpen: next }).catch(() => setIsOpen(!next));
+    setTogglingOpen(false);
+  };
+
+  const handleTabClick = (key) => {
+    if (PROTECTED_TABS.has(key) && !unlockedTabs.has(key)) {
+      setPinTarget(key);
+      setPinInput('');
+      setPinError(false);
+    } else {
+      setTab(key);
+    }
+  };
+
+  const handlePinKey = (digit) => {
+    const next = (pinInput + digit).slice(0, 4);
+    setPinInput(next);
+    setPinError(false);
+    if (next.length === 4) {
+      if (next === OWNER_PIN) {
+        setUnlockedTabs(prev => new Set([...prev, pinTarget]));
+        setTab(pinTarget);
+        setPinTarget(null);
+        setPinInput('');
+      } else {
+        setPinError(true);
+        setTimeout(() => setPinInput(''), 600);
+      }
+    }
+  };
 
   if (!user || user.role !== 'owner') {
     return <div className="card"><p className="text-sm text-slate-500">Owner access only.</p></div>;
@@ -1100,31 +1459,122 @@ export default function OwnerPage({ user }) {
 
   return (
     <div className="space-y-4 fade-in-up">
+      {/* Header with van status */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900 p-5 text-white shadow-2xl shadow-black/40">
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-        <div className="relative">
-          <span className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest">
-            👑 Owner
-          </span>
-          <h2 className="mt-2 text-2xl font-extrabold leading-tight">Business Dashboard</h2>
-          <p className="mt-1 text-sm text-white/70">Manage menu, orders, customers, routes and areas.</p>
+        <div className="relative flex items-start justify-between gap-4">
+          <div>
+            <span className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest">
+              👑 Owner
+            </span>
+            <h2 className="mt-2 text-2xl font-extrabold leading-tight">Business Dashboard</h2>
+            <p className="mt-1 text-sm text-white/70">Manage menu, orders, customers, routes and areas.</p>
+          </div>
+          {/* Van open/closed toggle */}
+          <div className="shrink-0 flex flex-col items-end gap-2 mt-1">
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${isOpen ? 'bg-emerald-500/30 text-emerald-300 ring-1 ring-emerald-400/40' : 'bg-red-500/30 text-red-300 ring-1 ring-red-400/40'}`}>
+              {isOpen ? '🟢 Open' : '🔴 Closed'}
+            </span>
+            <button
+              disabled={togglingOpen}
+              onClick={toggleOpen}
+              className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 disabled:opacity-60 ${isOpen ? 'bg-emerald-500' : 'bg-slate-500'}`}
+            >
+              <span className={`inline-block h-6 w-6 transform rounded-full bg-white shadow transition-transform duration-200 ${isOpen ? 'translate-x-5' : 'translate-x-0'}`} />
+            </button>
+          </div>
         </div>
       </section>
 
+      {/* Tab bar */}
       <div className="grid grid-cols-8 gap-1 rounded-2xl bg-slate-100/80 p-1">
         {TABS.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
-            className={`flex flex-col items-center gap-0.5 rounded-xl py-2 text-xs font-semibold transition-all duration-200 ${
+            className={`relative flex flex-col items-center gap-0.5 rounded-xl py-2 text-xs font-semibold transition-all duration-200 ${
               tab === key ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'
             }`}
-            onClick={() => setTab(key)}
+            onClick={() => handleTabClick(key)}
           >
             <Icon className="h-4 w-4" />
             {label}
+            {PROTECTED_TABS.has(key) && !unlockedTabs.has(key) && (
+              <span className="absolute right-1 top-1 text-[8px] leading-none text-slate-400">🔒</span>
+            )}
           </button>
         ))}
       </div>
+
+      {/* PIN modal */}
+      {pinTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-6 backdrop-blur-sm"
+          style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}
+          onClick={() => setPinTarget(null)}
+        >
+          <div
+            className="w-full max-w-xs rounded-3xl p-6 shadow-2xl"
+            style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <p className="mb-1 text-center text-lg font-extrabold" style={{ color: '#0f172a' }}>
+              🔒 {TABS.find(t => t.key === pinTarget)?.label}
+            </p>
+            <p className="mb-5 text-center text-sm" style={{ color: '#64748b' }}>Enter PIN to continue</p>
+            <div className="mb-5 flex justify-center gap-4">
+              {[0, 1, 2, 3].map(i => (
+                <div
+                  key={i}
+                  className="h-4 w-4 rounded-full border-2 transition-all duration-150"
+                  style={{
+                    borderColor: pinInput.length > i ? (pinError ? '#ef4444' : '#0f172a') : '#cbd5e1',
+                    backgroundColor: pinInput.length > i ? (pinError ? '#ef4444' : '#0f172a') : 'transparent'
+                  }}
+                />
+              ))}
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[1,2,3,4,5,6,7,8,9].map(d => (
+                <button
+                  key={d}
+                  className="rounded-2xl py-4 text-xl font-bold transition-all active:scale-95"
+                  style={{ backgroundColor: '#f1f5f9', color: '#1e293b' }}
+                  onClick={() => handlePinKey(String(d))}
+                >
+                  {d}
+                </button>
+              ))}
+              <div />
+              <button
+                className="rounded-2xl py-4 text-xl font-bold transition-all active:scale-95"
+                style={{ backgroundColor: '#f1f5f9', color: '#1e293b' }}
+                onClick={() => handlePinKey('0')}
+              >
+                0
+              </button>
+              <button
+                className="rounded-2xl py-4 text-base font-bold transition-all active:scale-95"
+                style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}
+                onClick={() => { setPinInput(p => p.slice(0, -1)); setPinError(false); }}
+              >
+                ⌫
+              </button>
+            </div>
+            {pinError && (
+              <p className="mt-3 text-center text-sm font-semibold" style={{ color: '#ef4444' }}>
+                Incorrect PIN
+              </p>
+            )}
+            <button
+              className="mt-4 w-full text-center text-xs transition-colors"
+              style={{ color: '#94a3b8' }}
+              onClick={() => setPinTarget(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {tab === 'menu' && <MenuTab />}
       {tab === 'orders' && <OrdersTab />}

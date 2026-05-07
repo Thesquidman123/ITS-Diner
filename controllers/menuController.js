@@ -1,7 +1,20 @@
 const path = require('path');
+const fs = require('fs');
 const menuModel = require('../models/menuModel');
 const { createId, nowIso } = require('../shared/utils');
 const { assertRequired, parseOptions } = require('../shared/validators');
+const { uploadsDir } = require('../server/config');
+
+function deleteImageFile(imageUrl) {
+  if (!imageUrl) return;
+  try {
+    const filename = path.basename(imageUrl);
+    const filePath = path.join(uploadsDir, filename);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  } catch {
+    /* ignore — file may already be gone */
+  }
+}
 
 function listMenu(req, res) {
   const includeUnavailable = req.user && req.user.role === 'owner';
@@ -41,18 +54,28 @@ function updateMenuItem(req, res, next) {
   try {
     const current = menuModel.findById(req.params.id);
     if (!current) {
+      if (req.file) deleteImageFile(`/uploads/${req.file.filename}`);
       return res.status(404).json({ message: 'Menu item not found' });
     }
-    const updated = menuModel.update(req.params.id, {
-      ...current,
-      ...req.body,
-      price: req.body.price !== undefined ? Number(req.body.price) : current.price,
-      options: req.body.options ? parseOptions(typeof req.body.options === 'string' ? JSON.parse(req.body.options) : req.body.options) : current.options,
-      imageUrl: req.file ? `/uploads/${path.basename(req.file.filename)}` : current.imageUrl,
-      available: req.body.available !== undefined ? req.body.available === 'false' ? false : Boolean(req.body.available) : current.available,
-      updatedAt: nowIso()
-    });
-    return res.json(updated);
+    const newImageUrl = req.file ? `/uploads/${path.basename(req.file.filename)}` : current.imageUrl;
+    try {
+      const updated = menuModel.update(req.params.id, {
+        ...current,
+        ...req.body,
+        price: req.body.price !== undefined ? Number(req.body.price) : current.price,
+        options: req.body.options ? parseOptions(typeof req.body.options === 'string' ? JSON.parse(req.body.options) : req.body.options) : current.options,
+        imageUrl: newImageUrl,
+        available: req.body.available !== undefined ? req.body.available === 'false' ? false : Boolean(req.body.available) : current.available,
+        updatedAt: nowIso()
+      });
+      if (req.file && current.imageUrl && current.imageUrl !== newImageUrl) {
+        deleteImageFile(current.imageUrl);
+      }
+      return res.json(updated);
+    } catch (saveError) {
+      if (req.file) deleteImageFile(newImageUrl);
+      throw saveError;
+    }
   } catch (error) {
     return next(error);
   }

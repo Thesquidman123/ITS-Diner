@@ -62,70 +62,9 @@ function seedIfNeeded() {
         createdAt: nowIso(),
         updatedAt: nowIso()
       },
-      {
-        id: createId('usr'),
-        role: ROLES.CUSTOMER,
-        name: 'Customer Demo',
-        email: 'customer@foodvan.local',
-        phone: '07000000004',
-        passwordHash: hashPassword('Password123!'),
-        creditEnabled: true,
-        creditLimit: 40,
-        balance: 8.5,
-        favourites: [],
-        subscribedAreas: [],
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      }
     ]);
   }
 
-  const menu = readCollection('menu.json', []);
-  if (menu.length === 0) {
-    writeCollection('menu.json', [
-      {
-        id: createId('menu'),
-        name: 'Classic Burger',
-        description: 'Grass-fed beef, salad, burger sauce',
-        price: 8.95,
-        category: 'Burgers',
-        options: [
-          { id: createId('opt'), name: 'Extra cheese', price: 1 },
-          { id: createId('opt'), name: 'Bacon', price: 1.5 }
-        ],
-        imageUrl: '',
-        available: true,
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      },
-      {
-        id: createId('menu'),
-        name: 'Chicken Sandwich',
-        description: 'Crispy chicken, slaw, pickles',
-        price: 7.95,
-        category: 'Sandwiches',
-        options: [
-          { id: createId('opt'), name: 'Hot sauce', price: 0.5 }
-        ],
-        imageUrl: '',
-        available: true,
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      },
-      {
-        id: createId('menu'),
-        name: 'Loaded Fries',
-        description: 'Seasoned fries with cheese sauce',
-        price: 4.95,
-        category: 'Sides',
-        options: [],
-        imageUrl: '',
-        available: true,
-        createdAt: nowIso(),
-        updatedAt: nowIso()
-      }
-    ]);
-  }
 
   const routes = readCollection('routes.json', []);
   if (routes.length === 0) {

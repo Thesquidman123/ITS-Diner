@@ -6,6 +6,7 @@ const DEFAULTS = {
   isOpen: true,
   closedMessage: 'We are currently closed. Check back soon!',
   loyaltyStampsRequired: 9,
+  loyaltyRewardDescription: 'Free item of your choice',
   staticOrderingEnabled: true,
   smtpHost: '',
   smtpPort: 587,
@@ -25,7 +26,7 @@ function get(req, res) {
 
 function update(req, res) {
   const current = getSettings();
-  const allowed = ['isOpen', 'closedMessage', 'appName', 'loyaltyStampsRequired', 'staticOrderingEnabled', 'smtpHost', 'smtpPort', 'smtpUser', 'smtpPass', 'smtpFrom'];
+  const allowed = ['isOpen', 'closedMessage', 'appName', 'loyaltyStampsRequired', 'loyaltyRewardDescription', 'staticOrderingEnabled', 'smtpHost', 'smtpPort', 'smtpUser', 'smtpPass', 'smtpFrom'];
   const patch = {};
   allowed.forEach((key) => {
     if (req.body[key] !== undefined) patch[key] = req.body[key];

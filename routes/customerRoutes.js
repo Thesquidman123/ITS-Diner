@@ -1,5 +1,5 @@
 const express = require('express');
-const { profile, myOrders, toggleFavourite, reorder, listCustomers, updateCredit, payDown, exportMyData, deleteMyAccount } = require('../controllers/customerController');
+const { profile, myOrders, toggleFavourite, reorder, listCustomers, updateCredit, payDown, redeemLoyalty, exportMyData, deleteMyAccount } = require('../controllers/customerController');
 const { requireAuth, requireRole } = require('../server/middleware/authMiddleware');
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.get('/me/reorder/:id', requireAuth, requireRole('customer'), reorder);
 router.get('/', requireAuth, requireRole('owner'), listCustomers);
 router.post('/me/paydown', requireAuth, requireRole('customer'), payDown);
 router.patch('/:id/credit', requireAuth, requireRole('owner'), updateCredit);
+router.post('/:id/redeem-loyalty', requireAuth, requireRole('owner', 'staff'), redeemLoyalty);
 router.get('/me/export', requireAuth, exportMyData);
 router.delete('/me', requireAuth, deleteMyAccount);
 

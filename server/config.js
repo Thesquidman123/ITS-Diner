@@ -19,5 +19,6 @@ module.exports = {
   emailFrom: process.env.EMAIL_FROM || 'noreply@foodvan.local',
   routeStopMinutes: Number(process.env.ROUTE_STOP_MINUTES || 20),
   dataDir: path.join(rootDir, 'data'),
-  uploadsDir: path.join(rootDir, 'uploads')
+  uploadsDir: path.join(rootDir, 'uploads'),
+  menuUploadsDir: path.join(rootDir, 'uploads', 'menu')
 };

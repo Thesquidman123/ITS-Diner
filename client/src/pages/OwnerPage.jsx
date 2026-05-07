@@ -11,12 +11,17 @@ const STATUS_COLOURS = {
 
 const BLANK_FORM = { name: '', description: '', price: '', category: 'Burgers', available: true, image: null };
 
+const ALLOWED_IMG_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const MAX_IMG_BYTES = 5 * 1024 * 1024;
+
 function MenuTab() {
   const [menu, setMenu] = useState([]);
   const [form, setForm] = useState(BLANK_FORM);
   const [extras, setExtras] = useState([]);
   const [editing, setEditing] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [clearImageFlag, setClearImageFlag] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState('');
@@ -32,10 +37,35 @@ function MenuTab() {
   };
   useEffect(() => { load(); }, []);
 
-  const handleImage = (e) => {
-    const file = e.target.files?.[0] || null;
+  const handleImageFile = (file) => {
+    if (!file) return;
+    if (!ALLOWED_IMG_TYPES.includes(file.type)) {
+      setFormError(`Unsupported file type (${file.type || 'unknown'}). Please use JPG, PNG, or WEBP.`);
+      return;
+    }
+    if (file.size > MAX_IMG_BYTES) {
+      setFormError(`Image too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum is 5 MB.`);
+      return;
+    }
+    setFormError('');
+    setClearImageFlag(false);
     setForm((f) => ({ ...f, image: file }));
-    setPreview(file ? URL.createObjectURL(file) : null);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleImage = (e) => handleImageFile(e.target.files?.[0] || null);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    handleImageFile(e.dataTransfer.files?.[0] || null);
+  };
+
+  const handleRemoveImage = () => {
+    setForm((f) => ({ ...f, image: null }));
+    setPreview(null);
+    setClearImageFlag(true);
+    if (fileRef.current) fileRef.current.value = '';
   };
 
   const addExtra = () => setExtras((ex) => [...ex, { name: '', price: '' }]);
@@ -47,6 +77,7 @@ function MenuTab() {
     setForm(BLANK_FORM);
     setExtras([]);
     setPreview(null);
+    setClearImageFlag(false);
     if (fileRef.current) fileRef.current.value = '';
   };
 
@@ -65,6 +96,7 @@ function MenuTab() {
         extras.filter((ex) => ex.name.trim()).map((ex) => ({ name: ex.name.trim(), price: Number(ex.price) || 0 }))
       ));
       if (form.image) data.append('image', form.image);
+      if (clearImageFlag) data.append('clearImage', 'true');
 
       if (editing) {
         await api.put(`/menu/${editing}`, data);
@@ -94,6 +126,12 @@ function MenuTab() {
 
   const toggleAvail = async (id) => {
     await api.patch(`/menu/${id}/toggle`);
+    load();
+  };
+
+  const deleteItem = async (item) => {
+    if (!window.confirm(`Remove "${item.name}" from the menu? This cannot be undone.`)) return;
+    await api.delete(`/menu/${item.id}`);
     load();
   };
 
@@ -166,12 +204,36 @@ function MenuTab() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <label className="flex cursor-pointer items-center gap-2 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
-            📷 {preview ? 'Change photo' : 'Add photo'}
-            <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImage} />
-          </label>
-          {preview && <img src={preview} alt="" className="h-14 w-14 rounded-xl object-cover shadow" />}
+        {/* Drag-and-drop image upload */}
+        <div>
+          <div
+            className={`relative rounded-2xl border-2 border-dashed transition-all ${dragOver ? 'border-brand-500 bg-brand-50' : 'border-slate-300 bg-slate-50'}`}
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={handleDrop}
+          >
+            {preview ? (
+              <div className="relative">
+                <img src={preview} alt="Preview" className="h-40 w-full rounded-2xl object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-2xl bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
+                  <label className="cursor-pointer rounded-xl bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-white transition">
+                    📷 Change
+                    <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImage} />
+                  </label>
+                  <button type="button" className="rounded-xl bg-red-500/90 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-600 transition" onClick={handleRemoveImage}>
+                    ✕ Remove
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className="flex cursor-pointer flex-col items-center gap-2 py-6 text-center">
+                <span className="text-2xl">📷</span>
+                <span className="text-sm font-semibold text-slate-600">{dragOver ? 'Drop to upload' : 'Drag & drop or click to add photo'}</span>
+                <span className="text-xs text-slate-400">JPG · PNG · WEBP · max 5 MB</span>
+                <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImage} />
+              </label>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -213,6 +275,7 @@ function MenuTab() {
                 <button className={`flex-1 rounded-xl px-3 py-1.5 text-xs font-semibold transition ${item.available ? 'bg-slate-100 text-slate-600 hover:bg-slate-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'}`} onClick={() => toggleAvail(item.id)}>
                   {item.available ? 'Hide' : 'Show'}
                 </button>
+                <button className="rounded-xl px-3 py-1.5 text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition" onClick={() => deleteItem(item)}>🗑</button>
               </div>
             </div>
           </div>

@@ -8,8 +8,8 @@ const { uploadsDir } = require('../server/config');
 function deleteImageFile(imageUrl) {
   if (!imageUrl) return;
   try {
-    const filename = path.basename(imageUrl);
-    const filePath = path.join(uploadsDir, filename);
+    const relative = imageUrl.replace(/^\/uploads\//, '');
+    const filePath = path.join(uploadsDir, relative);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
   } catch {
     /* ignore — file may already be gone */
@@ -38,7 +38,7 @@ function createMenuItem(req, res, next) {
       price: Number(price),
       category,
       options: parseOptions(typeof req.body.options === 'string' ? JSON.parse(req.body.options) : req.body.options),
-      imageUrl: req.file ? `/uploads/${path.basename(req.file.filename)}` : '',
+      imageUrl: req.file ? `/uploads/${req.file.filename}` : '',
       available: req.body.available === 'false' ? false : Boolean(req.body.available ?? true),
       createdAt: nowIso(),
       updatedAt: nowIso()
@@ -57,7 +57,10 @@ function updateMenuItem(req, res, next) {
       if (req.file) deleteImageFile(`/uploads/${req.file.filename}`);
       return res.status(404).json({ message: 'Menu item not found' });
     }
-    const newImageUrl = req.file ? `/uploads/${path.basename(req.file.filename)}` : current.imageUrl;
+    const clearImage = req.body.clearImage === 'true';
+    const newImageUrl = req.file
+      ? `/uploads/${req.file.filename}`
+      : clearImage ? '' : current.imageUrl;
     try {
       const updated = menuModel.update(req.params.id, {
         ...current,
@@ -68,7 +71,7 @@ function updateMenuItem(req, res, next) {
         available: req.body.available !== undefined ? req.body.available === 'false' ? false : Boolean(req.body.available) : current.available,
         updatedAt: nowIso()
       });
-      if (req.file && current.imageUrl && current.imageUrl !== newImageUrl) {
+      if (current.imageUrl && (req.file || clearImage)) {
         deleteImageFile(current.imageUrl);
       }
       return res.json(updated);
@@ -94,9 +97,20 @@ function toggleAvailability(req, res) {
   return res.json(updated);
 }
 
+function deleteMenuItem(req, res) {
+  const current = menuModel.findById(req.params.id);
+  if (!current) {
+    return res.status(404).json({ message: 'Menu item not found' });
+  }
+  menuModel.remove(req.params.id);
+  if (current.imageUrl) deleteImageFile(current.imageUrl);
+  return res.json({ message: 'Deleted' });
+}
+
 module.exports = {
   listMenu,
   createMenuItem,
   updateMenuItem,
-  toggleAvailability
+  toggleAvailability,
+  deleteMenuItem
 };

@@ -15,7 +15,7 @@ services:
       - .env
     volumes:
       - app_data:/app/data
-      - app_uploads:/app/uploads
+      - ./uploads:/app/uploads
     restart: unless-stopped
     networks:
       - internal
@@ -34,7 +34,6 @@ services:
 
 volumes:
   app_data:
-  app_uploads:
 
 networks:
   internal:
